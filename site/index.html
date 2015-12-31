@@ -1,0 +1,209 @@
+<HTML>
+ <HEAD>
+
+
+<link type="text/css" rel="stylesheet" href="/static/css/banner-styles.css"/>
+
+
+ <TITLE>Ethereal binary with H.323 support</TITLE>
+ <LINK REL=STYLESHEET HREF="ethereal.css" TYPE="text/css">
+ </HEAD>
+ <BODY>
+
+
+  <table width="100%" class=index border=0 cellspacing=0>
+   <tr>
+    <td width="12%" align="left">
+     &nbsp;
+    </td>
+    <td width="12%" align=center>
+     &nbsp;
+    </td>
+    <td width="12%" align=center>
+     &nbsp;
+    </td>
+    <td width="16%" align=center class=current>
+     &nbsp;
+    </td>
+    <td width="12%" align=center>
+     &nbsp;
+    </td>
+    <td width="12%" align=center>
+     &nbsp;
+    </td>
+    <td width="12%" align=right>
+     &nbsp;
+    </td>
+   </tr>
+   <tr>
+    <td width="12%" align="left" class=current border=0>
+     &nbsp;
+    </td>
+    <td width="76%" colspan=5>
+    &nbsp;
+    </td>
+    <td width="12%" align="right">
+     &nbsp;
+    </td>
+   </tr>
+  </table>
+
+  <h1 align="center">Ethereal binary with H.323 support</h1>
+  <h2>Preface</h2>
+  <p>
+   This project was done by me from February to June 2000 at Philips Business 
+   Communications in Hilversum. They asked me to create a network sniffer 
+   which could decode H.323 traffic. I changed the Q.931 dissector which 
+   was already used in Ethereal, I also changed the existing RTP and RTCP 
+   (RFC 1889) dissectors to suit my needs. I changed an existing ASN.1 
+   compiler from the OpenH323 project to generate source to be used in 
+   Ethereal. I graduated on this project with very high grade and received my 
+   diploma :-).
+  </p>
+  <p>
+   The executable that can be downloaded from this page is capable of decoding H.323
+   (Voice over IP standard) messages. Unfortunately, due to linking problems, currently I 
+   can't get it to work on Linux or any other *nix.
+  </p>
+  <h2>News</h2>
+  <p>
+   15-1-01<br>
+   I think I have nailed the one big issue my H.323 dissector had. The problem was that 
+   not all Call Signalling related trafiic was going to / from port 1720. When I wrote 
+   the dissector last year, I had no idea that a lot of people would run into this 
+   problem. I think I have now solved it using a heuristic dissector. It should solve all 
+   problems related to capturing direct endpoint to endpoint traffic and traffic to some 
+   gateways.
+  </p>
+  <p>
+   13-1-01<br>
+   Wow, within a day another release.... I have found a small TPKT/Q.931 problem and I have 
+   updated the website. I have not updated the executable yet, because uploading >3 
+   megabyte each evening costs me too much money, so I'll have to do it from work.
+  </p>
+  <p>
+   13-1-01<br>
+   Finally, a new version! This solves no big issues, but the source is now for Ethereal 
+   version 0.8.15. As always, there's an executable to download and I have also made 
+   available Tethereal, which is the textmode variant of Ethereal. This site has also changed
+   a little, the zip files are in a different place and the compile instructions have 
+   changed.
+  </p>
+  <p>
+   26-9-00<br>
+   Another new version of the executable, this solves ANOTHER Q.931 / TPKT related bug.
+   This version should also support Gatekeeper discovery (GRQ) using multicast.
+  </p>
+  <p>
+   20-9-00<br>
+   There's a new version of the executable available for download. There was a bug in 
+   the TPKT handling by the Q.931 dissector. This release also fixes another TPKT bug
+   I fixed earlier, where the TPKT header was sometimes displayed twice.
+  </p>
+  <h2>Download</h2>
+  <p>
+   Download the <a href="bin/ethereal.zip">Win32 executable</a> (1.3 megabyte) or the 
+   <a href="bin/tethereal.zip">textmode</a> variant.<br>
+   You'll also need the <a href="bin/glib_gtk.zip">GTK for windows</a> DLL's (1.1 megabyte).<br>
+   <br>
+   To get Ethereal working, see the <a href="/web/20010406001041/http://www.ethereal.com/distribution/win32/win32-README.txt">instructions</a> on the Ethereal site.
+  </p>
+  <p>
+   If you want to capture with Ethereal, you'll also need to install a 
+   <a href="/web/20010406001041/http://netgroup-serv.polito.it/winpcap/">packet driver</a>.
+  </p>
+  <p>
+   <a href="source/index.html">The source</a> is also available.
+  </p>
+  <h2>Known issues</h2>
+  <p>
+   The biggest issue that I know of has to do with an unfortunate part of the protocol, random 
+   ports. It is possible to not only see H.245 traffic going from/to random ports, but 
+   also H.225.0 Call Signalling traffic. I have seen this behaviour with gateways, but 
+   others have also seen this with terminals. There's no easy solution, but I'm working on 
+   it.
+  </p>
+  <p>
+   Update!<br>
+   I think I have nailed it.
+  </p>
+  <h2>Links</h2>
+  <p>
+   <ul>
+    <li><a href="/web/20010406001041/http://www.ethereal.com/">Ethereal</a></li>
+    <li><a href="/web/20010406001041/http://www.openh323.org/">OpenH323</a>, the creators of the library that the dissector is based on</li>
+    <li><a href="/web/20010406001041/http://www.databeam.com/h323/h323primer.html">An H.323 primer</a></li>
+    <li><a href="/web/20010406001041/http://people.itu.int/~jonesp/iptel/h323/">Another primer</a></li>
+   </ul>
+  </p>
+  <center>
+   <address>Andreas Sikkema, <a href="mailto:andreas.sikkema@philips.com">andreas.sikkema@philips.com</a></address>
+  </center>
+
+  <table width="100%" class=index border=0 cellspacing=0>
+   <tr>
+    <td width="12%" align="left">
+     &nbsp;
+    </td>
+    <td width="12%" align=center>
+     &nbsp;
+    </td>
+    <td width="12%" align=center>
+     &nbsp;
+    </td>
+    <td width="16%" align=center class=current>
+     &nbsp;
+    </td>
+    <td width="12%" align=center>
+     &nbsp;
+    </td>
+    <td width="12%" align=center>
+     &nbsp;
+    </td>
+    <td width="12%" align=right>
+     &nbsp;
+    </td>
+   </tr>
+   <tr>
+    <td width="12%" align="left" class=current border=0>
+     &nbsp;
+    </td>
+    <td width="76%" colspan=5 align="center">
+   <SCRIPT language="JavaScript">
+    <!--
+      var lastmod = document.lastModified; // get string of last modified date 
+      var lastmoddate = Date.parse(lastmod); // convert modified string to date 
+      if(lastmoddate == 0) { 
+        // unknown date (or January 1, 1970 GMT) 
+        document.writeln("This nifty piece of JavaScript can't determine the date of the last update....") ;
+      } 
+      else { 
+        document.writeln("Last update: " + lastmod);
+      } 
+    // -->
+   </SCRIPT>
+    </td>
+    <td width="12%" align="right">
+     <!-- Start of NedStat Basic code -->
+      <a href="/web/20010406001041/http://nl.nedstatbasic.net/cgi-bin/viewstat?name=ethereal_h323">
+       <img src="/web/20010406001041im_/http://nl.nedstatbasic.net/cgi-bin/nedstat.gif?name=ethereal_h323" border=0 alt="" nosave width=22 height=22>
+      </a>
+     <!-- End of NedStat Basic code -->
+     <!-- Start of ReferStat -->
+      <script type="text/javascript" language="JavaScript">
+       <!--
+         d=document;
+         d.write("<img src=\"/web/20010406001041/http://nl.nedstatbasic.net");
+         d.write("/cgi-bin/referstat.gif?");
+         d.write("name=ethereal_h323&refer=");
+         d.write(escape(top.document.referrer));
+         d.write("\" width=1 height=1 align=\"right\">");
+       // -->
+      </script>
+     <!-- End of ReferStat -->    
+    </td>
+   </tr>
+  </table>
+
+ </BODY>
+</HTML>
