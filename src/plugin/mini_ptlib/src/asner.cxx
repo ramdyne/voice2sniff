@@ -24,7 +24,7 @@
  * Portions are Copyright (C) 1993 Free Software Foundation, Inc.
  * All Rights Reserved.
  *
- * Contributor(s): Andreas Sikkema, others see below.
+ * Contributor(s): ______________________________________.
  *
  * $Log: asner.cxx,v $
  * Revision 1.53  2001/09/14 05:26:11  robertj
