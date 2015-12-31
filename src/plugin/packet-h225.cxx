@@ -5528,7 +5528,7 @@ plugin_init(plugin_address_table_t *pat){
   dissector_add( "udp.port", 1719, h225_handle );
   
   // CS is called from Q.931 (packet-q931.c/h)
-  register_dissector( "h225_cs", dissect_h225, h225Cont.h225_0.hf_proto_H225 );
+  register_dissector( "h225", dissect_h225, h225Cont.h225_0.hf_proto_H225 );
   proto_reg_handoff_h245();
 }
 /* End the functions we need for plugin stuff */
