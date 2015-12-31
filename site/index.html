@@ -5,6 +5,7 @@
  </HEAD>
  <BODY>
 
+
   <table width="100%" class=index border=0 cellspacing=0>
    <tr>
     <td width="12%" align="left">
@@ -46,26 +47,46 @@
   <h2>Preface</h2>
   <p>
    This project started in February 2000, when I started to work for
-   <a href="/web/20020525060228/http://www.sopho.philips.com/">Philips Business Communications</a> in Hilversum,
+   <a href="/web/20020727150934/http://www.sopho.philips.com/">Philips Business Communications</a> in Hilversum,
    the Netherlands. They asked me to create a network sniffer which was able to decode
-   H.323 traffic, while I was getting practival experience for my study,
-   <a href="/web/20020525060228/http://www.engineering.tech.nhl.nl/hi/">Computer Science</a>.
+   H.323 traffic, while I was getting practical experience for my study,
+   <a href="/web/20020727150934/http://www.engineering.tech.nhl.nl/hi/">Computer Science</a>.
   </p>
   <p>
    After some objective multiple criteria analysis (yeah, right), I decided to
-   focus on <a href="/web/20020525060228/http://www.ethereal.com/">Ethereal</a> and
-   <a href="/web/20020525060228/http://www.openh323.org/">OpenH323</a>. I changed the existing Q.931
+   focus on <a href="/web/20020727150934/http://www.ethereal.com/">Ethereal</a> and
+   <a href="/web/20020727150934/http://www.openh323.org/">OpenH323</a>. I changed the existing Q.931
    dissector which was already used in Ethereal, then I also changed (well, rewrote)
    the existing RTP and RTCP (RFC 1889) dissectors to suit my needs. I changed the
    existing ASN.1 compiler from the OpenH323 project to generate source to be used in
-   an Ethereal disector. Since March 2002 the H.323 support is supplied as a plugin
+   an Ethereal dissector. Since March 2002 the H.323 support is supplied as a plugin
    for Ethereal instead of a binary.
   </p>
   <p>
    Since March 2002, this project is available on Sourceforge. If you'd like to have
-   more information, checkout the <a href="/web/20020525060228/http://sourceforge.net/projects/ethereal-h323-p/">Sourceforge</a> site.
+   more information, checkout the <a href="/web/20020727150934/http://sourceforge.net/projects/ethereal-h323-p/">Sourceforge</a> site.
   </p>
   <h2>News</h2>
+  <p>
+   10-06-02<br>
+   I have received some bug reports:
+   <ul>
+    <li>Using the current plugin (0.0.3b) with Ethereal 0.9.4 will result in a console 
+     window opening showing <code>file proto.c: line 1061: assertion failed: &lt;hfinfo->type == FT_IPv4&gt;</code>, 
+     and Ethereal terminating with a "Runtime Error!"<br>
+     <em>The current plugin is NOT useable with Ethereal 0.9.4, use Ethereal 0.9.3. When I have time, I 
+     will release a new binary version of the plugin with Ethereal 0.9.4 support. If you have access 
+     to MS Visual Studio, you can compile the source yourself. It will work without any changes, just 
+     follow the instructions.</em>
+    </li>
+    <li>
+     Some people report that when Ethereal is loading a capture file whith the plugin installed it can 
+     crash.<br>
+     <em>Instead of installing ethereal-setup-0.9.3.exe, install ethereal-setup-0.9.3-1.exe. This will make 
+      your problem go away.</em>
+    </li>
+   </ul>
+  </p>
   <p>
    19-04-02<br>
    I have removed the old news, it was confusing some people, because sometimes I did
@@ -79,16 +100,16 @@
   </p>
   <p>
    25-03-02<br>
-   I have created a <a href="/web/20020525060228/http://sourceforge.net/projects/ethereal-h323-p/">project</a>
-   at <a href="/web/20020525060228/http://sourceforge.net/">Sourceforge</a>. Now you can subscribe to
-   <a href="/web/20020525060228/http://sourceforge.net/mail/?group_id=49311">mailinglists</a>,
-   <a href="/web/20020525060228/http://sourceforge.net/tracker/?group_id=49311">submit bugs</a> and
-   <a href="/web/20020525060228/http://sourceforge.net/project/showfiles.php?group_id=49311">download</a>
+   I have created a <a href="/web/20020727150934/http://sourceforge.net/projects/ethereal-h323-p/">project</a>
+   at <a href="/web/20020727150934/http://sourceforge.net/">Sourceforge</a>. Now you can subscribe to
+   <a href="/web/20020727150934/http://sourceforge.net/mail/?group_id=49311">mailinglists</a>,
+   <a href="/web/20020727150934/http://sourceforge.net/tracker/?group_id=49311">submit bugs</a> and
+   <a href="/web/20020727150934/http://sourceforge.net/project/showfiles.php?group_id=49311">download</a>
    from Sourceforge. The website will remain at voice2sniff.
   </p>
   <h2>Download</h2>
   <p>
-   The <a href="/web/20020525060228/http://sourceforge.net/project/showfiles.php?group_id=49311">downloads</a>
+   The <a href="/web/20020727150934/http://sourceforge.net/project/showfiles.php?group_id=49311">downloads</a>
    for the Ethereal plugin are now hosted by Sourceforge.
   </p>
   <h2>CallFlow</h2>
@@ -98,15 +119,30 @@
   </p>
   <h2>Known issues</h2>
   <p>
-   At the moment, none!
+   <ul>
+    <li>Using the current plugin (0.0.3b) with Ethereal 0.9.4 will result in a console 
+     window opening showing <code>file proto.c: line 1061: assertion failed: &lt;hfinfo->type == FT_IPv4&gt;</code>, 
+     and Ethereal terminating with a "Runtime Error!"<br>
+     <em>The current plugin is NOT useable with Ethereal 0.9.4, use Ethereal 0.9.3. When I have time, I 
+     will release a new binary version of the plugin with Ethereal 0.9.4 support. If you have access 
+     to MS Visual Studio, you can compile the source yourself. It will work without any changes, just 
+     follow the instructions.</em>
+    </li>
+    <li>
+     Some people report that when Ethereal is loading a capture file whith the plugin installed it can 
+     crash.<br>
+     <em>Instead of installing ethereal-setup-0.9.3.exe, install ethereal-setup-0.9.3-1.exe. This will make 
+      your problem go away.</em>
+    </li>
+   </ul>
   </p>
   <h2>Links</h2>
   <p>
    <ul>
-    <li><a href="/web/20020525060228/http://www.ethereal.com/">Ethereal</a></li>
-    <li><a href="/web/20020525060228/http://www.openh323.org/">OpenH323</a>, the creators of the library the H.323 dissector is based on</li>
-    <li><a href="/web/20020525060228/http://www.databeam.com/h323/h323primer.html">An H.323 primer</a></li>
-    <li><a href="/web/20020525060228/http://people.itu.int/~jonesp/iptel/h323/">Another primer</a></li>
+    <li><a href="/web/20020727150934/http://www.ethereal.com/">Ethereal</a></li>
+    <li><a href="/web/20020727150934/http://www.openh323.org/">OpenH323</a>, the creators of the library the H.323 dissector is based on</li>
+    <li><a href="/web/20020727150934/http://www.databeam.com/h323/h323primer.html">An H.323 primer</a></li>
+    <li><a href="/web/20020727150934/http://people.itu.int/~jonesp/iptel/h323/">Another primer</a></li>
    </ul>
   </p>
   <center>
@@ -116,8 +152,8 @@
   <table width="100%" class=index border=0 cellspacing=0>
    <tr>
     <td width="12%" align="left">
-     <a href="/web/20020525060228/http://sourceforge.net/projects/ethereal-h323-p/">
-      <img src="/web/20020525060228im_/http://sourceforge.net/sflogo.php?group_id=49311&amp;type=1"
+     <a href="/web/20020727150934/http://sourceforge.net/projects/ethereal-h323-p/">
+      <img src="/web/20020727150934im_/http://sourceforge.net/sflogo.php?group_id=49311&amp;type=1"
            border="0" alt="SourceForge.net Logo">
      </a>
     </td>
@@ -162,16 +198,16 @@
     <td width="12%" align="right">
       <!-- Begin Nedstat Basic code -->
       <!-- Title: Ethereal H.323 version -->
-      <!-- URL: /web/20020525060228/http://voice2sniff.org/index.html -->
-      <script language="JavaScript" src="/web/20020525060228js_/http://m1.nedstatbasic.net/basic.js"></script>
+      <!-- URL: /web/20020727150934/http://voice2sniff.org/index.html -->
+      <script language="JavaScript" src="/web/20020727150934js_/http://m1.nedstatbasic.net/basic.js"></script>
       <script language="JavaScript">
         <!--
           nedstatbasic("AAr2qwKzQMS3EK1GGI7CWwC9X5bA", 0);
         // -->
       </script>
       <noscript>
-        <a target="_blank" href="/web/20020525060228/http://v1.nedstatbasic.net/stats?AAr2qwKzQMS3EK1GGI7CWwC9X5bA">
-          <img src="/web/20020525060228im_/http://m1.nedstatbasic.net/n?id=AAr2qwKzQMS3EK1GGI7CWwC9X5bA" border="0" nosave  width="18" height="18">
+        <a target="_blank" href="/web/20020727150934/http://v1.nedstatbasic.net/stats?AAr2qwKzQMS3EK1GGI7CWwC9X5bA">
+          <img src="/web/20020727150934im_/http://m1.nedstatbasic.net/n?id=AAr2qwKzQMS3EK1GGI7CWwC9X5bA" border="0" nosave  width="18" height="18">
         </a>
       </noscript>
       <!-- End Nedstat Basic code -->
@@ -181,4 +217,3 @@
 
  </BODY>
 </HTML>
-
