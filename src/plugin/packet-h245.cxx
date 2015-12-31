@@ -133,28 +133,28 @@ dissect_h245_tpkt_pdu( tvbuff_t *tvb, packet_info *pinfo, proto_tree *tree )
 		bytes[ nr_bytes_in_data ] = tvb_get_guint8( tvb, offset + nr_bytes_in_data );
 		nr_bytes_in_data++;
 	}
-  
+
   PPER_Stream strm( bytes );
   H245_MultimediaSystemControlMessage seq;
-  
+
   if ( seq.Decode( strm ) ) {
   /*
   * After a succesful decode do preShowEthereal() first
-  * This might result in more protocols to be dissected 
+  * This might result in more protocols to be dissected
   * ( compare H.225.0 -> H.245)
     */
     seq.preShowEthereal();
     if ( check_col( pinfo->cinfo, COL_PROTOCOL ) )   {
       col_add_str( pinfo->cinfo, COL_PROTOCOL, "H.245" );
     }
-    if ( check_col( pinfo->cinfo, COL_INFO ) )   
+    if ( check_col( pinfo->cinfo, COL_INFO ) )
     {
       col_append_fstr( pinfo->cinfo, COL_INFO, "%s ", (const unsigned char*) seq.getSummary() );
     }
-    
-    if ( tree ) 
+
+    if ( tree )
     {
-    /* 
+    /*
     * Start displaying
       */
       proto_tree	*h245_tree = (proto_tree*) NULL;
@@ -166,7 +166,10 @@ dissect_h245_tpkt_pdu( tvbuff_t *tvb, packet_info *pinfo, proto_tree *tree )
   }
   else
   {
-    col_append_str( pinfo->cinfo, COL_INFO, "Failure during decode" );
+    if ( check_col( pinfo->cinfo, COL_INFO ) ) 
+    {
+      col_add_str( pinfo->cinfo, COL_INFO, "Failure during decode" );
+    }
   }
 }
 

@@ -64,7 +64,7 @@ LIB32=link.exe -lib
 # PROP Intermediate_Dir "Debug"
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /W3 /Gm /GX /ZI /Od /D "WIN32" /D "_DEBUG" /D "_MBCS" /D "_LIB" /YX /FD /GZ /c
-# ADD CPP /nologo /W4 /Gm /GX /Zi /Od /I "C:\tools\gtk-dev\new\src\glib" /I "C:\tools\gtk-dev\new\src\gtk+" /I "d:\ethereal\ethereal-0.8.15" /D "WIN32" /D "_DEBUG" /D "MINI_PTLIB" /FR /FD /I /GZ /c
+# ADD CPP /nologo /W4 /Gm /GX /Zi /Od /I "C:\d\ethereal\gtk+-dev\src\glib" /I "C:\d\ethereal\gtk+-dev\src\gtk+" /D "WIN32" /D "_DEBUG" /D "MINI_PTLIB" /FR /FD /I /GZ /c
 # ADD BASE RSC /l 0x413 /d "_DEBUG"
 # ADD RSC /l 0x413 /d "_DEBUG"
 BSC32=bscmake.exe
