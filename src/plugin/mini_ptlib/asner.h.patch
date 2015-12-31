@@ -1,0 +1,114 @@
+--- c:/tools/pwlib/include/ptclib/asner.h	Tue Aug 10 00:02:46 1999
++++ asner.h	Fri May 19 16:46:45 2000
+@@ -27,6 +27,9 @@
+  * Contributor(s): ______________________________________.
+  *
+  * $Log: asner.h,v $
++ * Revision 1.2  2000/01/22 21:52:08  dliu
++ * from openh323
++ *
+  * Revision 1.10  1999/08/09 13:02:45  robertj
+  * dded ASN compiler #defines for backward support of pre GCC 2.9 compilers.
+  * Added ASN compiler #defines to reduce its memory footprint.
+@@ -66,10 +69,18 @@
+ #endif
+ 
+ 
++extern "C" {
++#  include <glib.h>
++#  include "../../../packet.h"
++}
++
+ class PASN_Stream;
+ class PBER_Stream;
+ class PPER_Stream;
+ 
++class PChannel {
++    int i;
++};
+ 
+ /////////////////////////////////////////////////////////////////////////////
+ 
+@@ -148,6 +159,15 @@
+     virtual void SetConstraints(ConstraintType type, int lower = 0, unsigned upper = UINT_MAX);
+     virtual void SetCharacterSet(ConstraintType ctype, const char * charSet);
+     virtual void SetCharacterSet(ConstraintType ctype, unsigned firstChar, unsigned lastChar);
++		
++		virtual void showEthereal( proto_tree *, unsigned int ) const { return; }
++		virtual void setContainer( PObject* ) { return; }
++		virtual void preShowEthereal( void ) { return; }
++		virtual PString getSummary( void ) { return "PASN_Object"; }
++		void SetStartbyte( unsigned int byte );
++		void SetStopbyte( unsigned int byte );
++		unsigned int GetByteLength( void ) const;
++		unsigned int GetStartByte( void ) const;
+ 
+   protected:
+     PASN_Object(unsigned tag, TagClass tagClass, BOOL extend = FALSE);
+@@ -158,6 +178,9 @@
+     TagClass tagClass;
+     /// ASN object tag
+     unsigned tag;
++	private:
++		unsigned int startbyte;
++		unsigned int stopbyte;
+ };
+ 
+ 
+@@ -373,6 +396,8 @@
+     virtual BOOL Decode(PASN_Stream &);
+     virtual void Encode(PASN_Stream &) const;
+ 
++		virtual char* getValue( void ) const;
++
+     BOOL CommonDecode(PASN_Stream & strm, unsigned dataLen);
+     void CommonEncode(PBYTEArray & eObjId) const;
+ 
+@@ -421,6 +446,11 @@
+     BOOL DecodePER(PPER_Stream & strm);
+     void EncodePER(PPER_Stream & strm) const;
+ 
++		/* Special Ethereal specific member 
++		 * Delete the returned pointer yourself!
++		 */
++		virtual char* getValue( void ) const;
++
+   protected:
+     unsigned totalBits;
+     PBYTEArray bitData;
+@@ -470,6 +500,11 @@
+     BOOL DecodePER(PPER_Stream & strm);
+     void EncodePER(PPER_Stream & strm) const;
+ 
++		/* Special Ethereal specific member 
++		 * Delete the returned pointer yourself!
++		 */
++		virtual char* getValue( void ) const;
++
+   protected:
+     PBYTEArray value;
+ };
+@@ -503,6 +538,11 @@
+     BOOL DecodePER(PPER_Stream & strm);
+     void EncodePER(PPER_Stream & strm) const;
+ 
++		/* Special Ethereal specific member 
++		 * Delete the returned pointer yourself!
++		 */
++		virtual char* getValue( void ) const;
++
+   protected:
+     PASN_ConstrainedString(const char * canonicalSet, PINDEX setSize,
+                            unsigned tag, TagClass tagClass);
+@@ -572,6 +612,11 @@
+     void EncodeBER(PBER_Stream & strm) const;
+     BOOL DecodePER(PPER_Stream & strm);
+     void EncodePER(PPER_Stream & strm) const;
++
++		/* Special Ethereal specific member 
++		 * Delete the returned pointer yourself!
++		 */
++		virtual char* getValue( void ) const;
+ 
+   protected:
+     BOOL IsLegalCharacter(WORD ch);

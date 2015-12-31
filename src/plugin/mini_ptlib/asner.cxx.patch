@@ -1,0 +1,477 @@
+--- c:/tools/pwlib/src/ptclib/asner.cxx	Tue Nov 23 10:15:44 1999
++++ asner.cxx	Fri May 26 11:43:30 2000
+@@ -27,6 +27,9 @@
+  * Contributor(s): ______________________________________.
+  *
+  * $Log: asner.cxx,v $
++ * Revision 1.29  2000/01/20 06:22:22  robertj
++ * Fixed boundary condition error for constrained integer encoding (values 1, 256 etc)
++ *
+  * Revision 1.28  1999/11/22 23:15:43  robertj
+  * Fixed bug in PASN_Choice::Compare(), should make sure choices are the same before comparing.
+  *
+@@ -112,15 +115,15 @@
+  *
+  */
+ 
+-#include <ptlib.h>
++#include "../include/mini_ptlib.h"
+ 
+ #ifdef __GNUC__
+ #pragma implementation "asner.h"
+ #endif
+ 
+-#include <ptclib/asner.h>
++#include "../include/ptlib/asner.h"
+ 
+-#define new PNEW
++//#define new PNEW
+ 
+ 
+ static PINDEX CountBits(unsigned range)
+@@ -134,6 +137,20 @@
+   return nBits;
+ }
+ 
++PString InttoStr( unsigned int in ) 
++{
++	if (in == 0 ) return PString( "0" );
++
++	PString result;
++	int tmp;
++
++	while ( in > 0 ) {
++		tmp = in % 10;
++		in = in / 10;
++		result = PString( char( tmp + 48 ) ) + result;
++	}
++	return result;
++}
+ 
+ ///////////////////////////////////////////////////////////////////////
+ 
+@@ -207,6 +224,34 @@
+ {
+ }
+ 
++void PASN_Object::SetStartbyte( unsigned int byte )
++{
++	startbyte = byte; 
++}
++
++void PASN_Object::SetStopbyte( unsigned int byte )
++{
++	stopbyte = byte;
++}
++
++unsigned int PASN_Object::GetByteLength( void ) const
++{
++	/*
++	 * Returning (startbyte-stopbyte)+1 results in wierd 
++	 * item lengths, they're 1 byte to long, if we don't add one
++	 * where start and stop are in the same byte result becomes 
++	 * zero and that's also wrong. This solution also seems wrong...
++	 */
++	unsigned int result = ( stopbyte - startbyte );
++	if ( result == 0 ) result = 1;
++	return result;
++}
++
++unsigned int PASN_Object::GetStartByte( void ) const
++{
++	return startbyte;
++}
++
+ 
+ ///////////////////////////////////////////////////////////////////////
+ 
+@@ -322,7 +367,11 @@
+ 
+ BOOL PASN_Null::Decode(PASN_Stream & strm)
+ {
+-  return strm.NullDecode(*this);
++	int result;
++	SetStartbyte( strm.GetPosition() );
++  result = strm.NullDecode(*this);
++	SetStopbyte( strm.GetPosition() );
++	return result;
+ }
+ 
+ 
+@@ -406,7 +455,11 @@
+ 
+ BOOL PASN_Boolean::Decode(PASN_Stream & strm)
+ {
+-  return strm.BooleanDecode(*this);
++	int result;
++	SetStartbyte( strm.GetPosition() );
++  result = strm.BooleanDecode(*this);
++	SetStopbyte( strm.GetPosition() );
++	return result;
+ }
+ 
+ 
+@@ -551,7 +604,11 @@
+ 
+ BOOL PASN_Integer::Decode(PASN_Stream & strm)
+ {
+-  return strm.IntegerDecode(*this);
++	int result;
++	SetStartbyte( strm.GetPosition() );
++  result = strm.IntegerDecode(*this);
++	SetStopbyte( strm.GetPosition() );
++	return result;
+ }
+ 
+ 
+@@ -740,7 +797,11 @@
+ 
+ BOOL PASN_Enumeration::Decode(PASN_Stream & strm)
+ {
+-  return strm.EnumerationDecode(*this);
++	int result;
++	SetStartbyte( strm.GetPosition() );
++  result = strm.EnumerationDecode(*this);
++	SetStopbyte( strm.GetPosition() );
++	return result;
+ }
+ 
+ 
+@@ -872,7 +933,11 @@
+ 
+ BOOL PASN_Real::Decode(PASN_Stream & strm)
+ {
+-  return strm.RealDecode(*this);
++	int result;
++	SetStartbyte( strm.GetPosition() );
++  result = strm.RealDecode(*this);
++	SetStopbyte( strm.GetPosition() );
++	return result;
+ }
+ 
+ 
+@@ -1125,7 +1190,11 @@
+ 
+ BOOL PASN_ObjectId::Decode(PASN_Stream & strm)
+ {
+-  return strm.ObjectIdDecode(*this);
++	int result;
++	SetStartbyte( strm.GetPosition() );
++  result = strm.ObjectIdDecode(*this);
++	SetStopbyte( strm.GetPosition() );
++	return result;
+ }
+ 
+ 
+@@ -1177,6 +1246,21 @@
+   BlockEncode(eObjId, eObjId.GetSize());
+ }
+ 
++char* PASN_ObjectId::getValue( void ) const
++{
++	PString result;
++  for (PINDEX i = 0; i < value.GetSize(); i++) {
++    result += InttoStr( value[ i ] );
++    if (i < value.GetSize()-1)
++      result += '.';
++  }
++	
++	char* presult = new char[ result.GetLength() + 1 ];
++	for ( PINDEX j = 0; j < result.GetLength(); j++) presult[j] = result[j];
++	presult[ result.GetLength() ] = '\0';
++	return presult;
++}
++
+ 
+ ///////////////////////////////////////////////////////////////////////
+ 
+@@ -1316,7 +1400,11 @@
+ 
+ BOOL PASN_BitString::Decode(PASN_Stream & strm)
+ {
+-  return strm.BitStringDecode(*this);
++	int result;
++	SetStartbyte( strm.GetPosition() );
++  result = strm.BitStringDecode(*this);
++	SetStopbyte( strm.GetPosition() );
++	return result;
+ }
+ 
+ 
+@@ -1424,6 +1512,22 @@
+   value.EncodePER(*this);
+ }
+ 
++char* PASN_BitString::getValue( void ) const
++{
++	/*
++	 * Return a pointer to a copy of the array. If the array
++	 * does not have a '\0' as the last byte, it is appended.
++	 * Stupid Ethereal feature ;-)
++	 */
++	int nr = GetSize();
++	char* pData = new char[ nr + 1 ];
++	//memcpy( pData, theArray, elementSize );
++	for( int i=0; i < nr; i++ ) {
++		pData[i] = bitData[i] + 48;
++	}
++	if ( pData[ nr - 1 ] != '\0' ) pData[ nr ] = '\0';
++	return pData;
++}
+ 
+ ///////////////////////////////////////////////////////////////////////
+ 
+@@ -1562,7 +1666,11 @@
+ 
+ BOOL PASN_OctetString::Decode(PASN_Stream & strm)
+ {
+-  return strm.OctetStringDecode(*this);
++	int result;
++	SetStartbyte( strm.GetPosition() );
++  result = strm.OctetStringDecode(*this);
++	SetStopbyte( strm.GetPosition() );
++	return result;
+ }
+ 
+ 
+@@ -1661,6 +1769,23 @@
+   value.EncodePER(*this);
+ }
+ 
++char* PASN_OctetString::getValue( void ) const
++{
++	/*
++	 * Return a pointer to a copy of the array. If the array
++	 * does not have a '\0' as the last byte, it is appended.
++	 * Stupid Ethereal feature ;-)
++	 */
++	int nr = GetSize();
++	char* pData = new char[ nr + 1 ];
++	//memcpy( pData, theArray, elementSize );
++	for( int i=0; i < nr; i++ ) {
++		pData[i] = value[i];
++		if ( pData[i] == 0 ) pData[i] = '0';
++	}
++	if ( pData[ nr - 1 ] != '\0' ) pData[ nr ] = '\0';
++	return pData;
++}
+ 
+ ///////////////////////////////////////////////////////////////////////
+ 
+@@ -1752,7 +1877,11 @@
+ 
+ BOOL PASN_ConstrainedString::Decode(PASN_Stream & strm)
+ {
+-  return strm.ConstrainedStringDecode(*this);
++	int result;
++	SetStartbyte( strm.GetPosition() );
++  result = strm.ConstrainedStringDecode(*this);
++	SetStopbyte( strm.GetPosition() );
++	return result;
+ }
+ 
+ 
+@@ -1868,6 +1997,18 @@
+   value.EncodePER(*this);
+ }
+ 
++char* PASN_ConstrainedString::getValue( void ) const
++{
++	/*
++	 * Return a pointer to a copy of the array. If the array
++	 * does not have a '\0' as the last byte, it is appended.
++	 * Stupid Ethereal feature ;-)
++	 */
++	char* pData = new char[ value.GetLength() + 1 ];
++	strcpy(pData, (const char*) value );
++	return pData;
++}
++
+ 
+ #define DEFINE_STRING_CLASS(name, set) \
+   static const char name##StringSet[] = set; \
+@@ -2144,7 +2285,11 @@
+ 
+ BOOL PASN_BMPString::Decode(PASN_Stream & strm)
+ {
+-  return strm.BMPStringDecode(*this);
++	int result;
++	SetStartbyte( strm.GetPosition() );
++  result = strm.BMPStringDecode(*this);
++	SetStopbyte( strm.GetPosition() );
++	return result;
+ }
+ 
+ 
+@@ -2250,6 +2395,32 @@
+   value.EncodePER(*this);
+ }
+ 
++char* PASN_BMPString::getValue( void ) const
++{
++	/*
++	 * Return a pointer to a copy of the array. If the array
++	 * does not have a '\0' as the last byte, it is appended.
++	 * Stupid Ethereal feature ;-)
++	 */
++	int nr =  value.GetSize();
++	char* pData = new char[ nr + 1 ];
++
++	int i = 0;
++	int tmp = value[i];
++	while (i < nr ) {
++		tmp = value[i];
++		if ( tmp > 0xFF00 ) {
++			pData[ i ] = value[ i ] & 0xFF;
++		}
++		else {
++			pData[ i ] = value[ i ];
++		}
++		i++;
++	}
++	if ( pData[ i - 1 ] != '\0' ) pData[ i ] = '\0';
++	return pData;
++}
++
+ 
+ ///////////////////////////////////////////////////////////////////////
+ 
+@@ -2333,8 +2504,10 @@
+   if (tag == UINT_MAX)
+     return "<uninitialised>";
+ 
+-  if (names.Contains(tag))
+-    return names[tag];
++  if (names.Contains(tag)) {
++		PString tmps = names[tag];
++    return tmps;
++	}
+ 
+   if (choice != NULL && choice->IsDescendant(PASN_Choice::Class()) &&
+       choice->GetTag() == tag && choice->GetTagClass() == tagClass)
+@@ -2733,7 +2906,11 @@
+ 
+ BOOL PASN_Choice::Decode(PASN_Stream & strm)
+ {
+-  return strm.ChoiceDecode(*this);
++	int result;
++	SetStartbyte( strm.GetPosition() );
++  result = strm.ChoiceDecode(*this);
++	SetStopbyte( strm.GetPosition() );
++	return result;
+ }
+ 
+ 
+@@ -2992,7 +3169,11 @@
+ 
+ BOOL PASN_Sequence::Decode(PASN_Stream & strm)
+ {
+-  return PreambleDecode(strm) && UnknownExtensionsDecode(strm);
++	int result;
++	SetStartbyte( strm.GetPosition() );
++  result = PreambleDecode(strm) && UnknownExtensionsDecode(strm);
++	SetStopbyte( strm.GetPosition() );
++	return result;
+ }
+ 
+ 
+@@ -3422,7 +3603,11 @@
+ 
+ BOOL PASN_Array::Decode(PASN_Stream & strm)
+ {
+-  return strm.ArrayDecode(*this);
++	int result;
++	SetStartbyte( strm.GetPosition() );
++  result = strm.ArrayDecode(*this);
++	SetStopbyte( strm.GetPosition() );
++	return result;
+ }
+ 
+ 
+@@ -3685,6 +3870,11 @@
+ }
+ 
+ 
++#ifdef MINI_PTLIB
++BOOL PBER_Stream::Read(PChannel & )
++{
++  return FALSE;
++#else
+ BOOL PBER_Stream::Read(PChannel & chan)
+ {
+   SetSize(0);
+@@ -3738,13 +3928,20 @@
+     dataLen -= readbytes;
+   }
+   return TRUE;
++#endif
+ }
+ 
+ 
++#ifdef MINI_PTLIB
++BOOL PBER_Stream::Write(PChannel & )
++{
++  return FALSE;
++#else
+ BOOL PBER_Stream::Write(PChannel & chan)
+ {
+   CompleteEncoding();
+   return chan.Write(theArray, GetSize());
++#endif
+ }
+ 
+ 
+@@ -3891,7 +4088,7 @@
+   if (len < 128)
+     ByteEncode(len);
+   else {
+-    PINDEX count = (CountBits(len)+7)/8;
++    PINDEX count = (CountBits(len+1)+7)/8;
+     ByteEncode(count|0x80);
+     while (count-- > 0)
+       ByteEncode(len >> (count*8));
+@@ -3937,6 +4134,11 @@
+ }
+ 
+ 
++#ifdef MINI_PTLIB
++BOOL PPER_Stream::Read(PChannel & )
++{
++  return FALSE;
++#else
+ BOOL PPER_Stream::Read(PChannel & chan)
+ {
+   ResetDecoder();
+@@ -3953,9 +4155,14 @@
+   PINDEX data_len = ((tpkt[2] << 8)|tpkt[3]) - 4;
+ 
+   return chan.ReadBlock(GetPointer(data_len), data_len);
++#endif
+ }
+ 
+-
++#ifdef MINI_PTLIB
++BOOL PPER_Stream::Write(PChannel & )
++{
++  return FALSE;
++#else
+ BOOL PPER_Stream::Write(PChannel & chan)
+ {
+   CompleteEncoding();
+@@ -3972,6 +4179,7 @@
+   tpkt[3] = (BYTE)len;
+ 
+   return chan.Write(tpkt, sizeof(tpkt)) && chan.Write(theArray, size);
++#endif
+ }
+ 
+ 
+@@ -4163,7 +4371,7 @@
+ 
+   if (aligned && (range == 0 || range > 255)) { // not 10.5.6 and not 10.5.7.1
+     if (nBits > 16) {                           // not 10.5.7.4
+-      int numBytes = value == 0 ? 1 : (((CountBits(value - lower))+7)/8);
++      int numBytes = value == 0 ? 1 : (((CountBits(value - lower + 1))+7)/8);
+       LengthEncode(numBytes, 1, (nBits+7)/8);    // 12.2.6
+       nBits = numBytes*8;
+     }

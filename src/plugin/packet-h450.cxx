@@ -1522,10 +1522,6 @@ static gint *etth450[] =
 
   register_dissector( "h450", dissect_h450, h450Cont.h450_0.hf_proto_H450 );
 
-	//h245_tpkt_pdu_handle = create_dissector_handle(dissect_h245_tpkt_pdu, h245Cont.h245_0.hf_proto_H245);
-
-
-	//register_init_routine( &h245_init );
 }
 
 } // extern "C"
