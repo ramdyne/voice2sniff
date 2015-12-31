@@ -1,0 +1,55 @@
+#
+# $Id: Makefile.nmake,v 1.7 2002/01/21 07:37:48 guy Exp $
+#
+
+include ..\..\config.nmake
+
+############### no need to modify below this line #########
+
+CFLAGS=/nologo /DHAVE_CONFIG_H /I../.. /I../wiretap /Iepan \
+	/I$(GLIB_DIR) /I$(GTK_DIR) /I$(GLIB_DIR)/gmodule \
+	/I$(GTK_DIR)\gdk /I$(GTK_DIR)\gdk\win32 \
+	/I$(PCAP_DIR)\include /I../mini_ptlib/include $(LOCAL_CFLAGS) \
+	/W4 /D "_DEBUG" /D "WIN32" /D "USE_FOR_ETHEREAL" /D "H323" /D "MINI_PTLIB" /GX /Zi /Zm400 /MLd
+
+CCFLAGS=/nologo /DHAVE_CONFIG_H /I../.. /I../wiretap /Iepan \
+	/I$(GLIB_DIR) /I$(GTK_DIR) /I$(GLIB_DIR)/gmodule \
+	/I$(GTK_DIR)\gdk /I$(GTK_DIR)\gdk\win32 \
+	/I$(PCAP_DIR)\include /I../mini_ptlib/include $(LOCAL_CFLAGS) \
+	/W4 /D "_DEBUG" /D "WIN32" /D "USE_FOR_ETHEREAL" /D "H323" /D "MINI_PTLIB" /GX /Zi /Zm400 /MLd
+
+{$S}.c{$O}.obj::
+   $(CC) $(CFLAGS) -Fd$O\ -c $<
+
+{$S}.cxx{$O}.obj::
+   $(CC) $(CCFLAGS) -Fd$O\ -c $<
+
+H323_CPLUSPLUS_SOURCES = \
+	h225_container.cxx \
+	h225_container0.cxx \
+	h225_container1.cxx \
+	packet-h225.cxx \
+	h235_container.cxx \
+	h235_container0.cxx \
+	h225.cxx \
+	h235.cxx \
+	h245_container.cxx \
+	h245_container0.cxx \
+	h245_container1.cxx \
+	h245_container2.cxx \
+	h245_container3.cxx \
+	packet-h245.cxx \
+	h245.cxx \
+	h450_container.cxx \
+	h450_container0.cxx \
+	h450_container1.cxx \
+	packet-h450.cxx \
+	h450.cxx
+
+OBJECTS = $(H323_CPLUSPLUS_SOURCES:.cxx=.obj) 
+
+h323.dll h323.exp h323.lib : $(OBJECTS) ..\plugin_api.obj
+	link -dll /out:h323.dll $(OBJECTS) mini_ptlib/Debug/mini_ptlib.lib ..\plugin_api.obj
+
+clean:
+	rm -f $(OBJECTS) h323.dll h323.exp h323.lib $(PDB_FILE)
