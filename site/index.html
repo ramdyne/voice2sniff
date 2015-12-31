@@ -1,9 +1,10 @@
 <HTML>
  <HEAD>
- <TITLE>Ethereal binary with H.323 support</TITLE>
+ <TITLE>H.323 for Ethereal</TITLE>
  <LINK REL=STYLESHEET HREF="ethereal.css" TYPE="text/css">
  </HEAD>
  <BODY>
+
 
   <table width="100%" class=index border=0 cellspacing=0>
    <tr>
@@ -42,115 +43,133 @@
    </tr>
   </table>
 
-  <h1 align="center">Ethereal binary with H.323 support</h1>
+  <h1 align="center">H.323 for Ethereal</h1>
   <h2>Preface</h2>
   <p>
-   This project was done by me from February to June 2000 at Philips Business 
-   Communications in Hilversum. They asked me to create a network sniffer 
-   which could decode H.323 traffic. I changed the Q.931 dissector which 
-   was already used in Ethereal, I also changed the existing RTP and RTCP 
-   (RFC 1889) dissectors to suit my needs. I changed an existing ASN.1 
-   compiler from the OpenH323 project to generate source to be used in 
-   Ethereal. 
+   This project was done by me from February to June 2000 at Philips Business
+   Communications in Hilversum. They asked me to create a network sniffer
+   which could decode H.323 traffic. I changed the Q.931 dissector which
+   was already used in Ethereal, I also changed the existing RTP and RTCP
+   (RFC 1889) dissectors to suit my needs. I changed an existing ASN.1
+   compiler from the OpenH323 project to generate source to be used in
+   Ethereal. Since March 2002 the H.323 is supplied as a plugin for Ethereal
+   in stead of a binary.
   </p>
   <p>
-   At this site you can download Ethereal in two varieties. The source is 
-   available for those that run Linux or for those running Windows who want to 
-   know how it all works. For those who want to download a binary, I have only 
-   got a Windows version available.
+   If you want more information, checkout the <a href="/web/20020401232422/http://sourceforge.net/projects/ethereal-h323-p/">Sourceforge</a> site.
   </p>
   <h2>News</h2>
   <p>
-   14-8-01<br>
-   The faststart and H.245 tunneling capability has been improved. In Help/About 
-   you can now see that this version of Ethereal supports H.323. No source 
-   update (yet). A collegue of mine has created an Installshield setup. (hi Hans!) 
+   25-03-02<br>
+   I have created a <a href="/web/20020401232422/http://sourceforge.net/projects/ethereal-h323-p/">project</a>
+   at <a href="/web/20020401232422/http://sourceforge.net/">Sourceforge</a>. Now you can subscribe to
+   <a href="/web/20020401232422/http://sourceforge.net/mail/?group_id=49311">mailinglists</a>,
+   <a href="/web/20020401232422/http://sourceforge.net/tracker/?group_id=49311">submit bugs</a> and
+   <a href="/web/20020401232422/http://sourceforge.net/project/showfiles.php?group_id=49311">download</a>
+   from Sourceforge. The website will remain at voice2sniff.
+  </p>
+   <p>
+   15-02-02<br>
+   New version of the source! The Windows executable and the source are now back
+   in-sync. I don't want to know how long it took me....
   </p>
   <p>
-   6-7-01<br>
-   The H.323 capable Ethereal now supports Faststart and H.245 tunneling. No 
-   upgrade to Ethereal 0.8.18 yet. The source you can download at this site 
-   has NOT been updated. I will have to really spend some time making a working 
-   Linux source, because at the moment it doesn't work. Windows version should 
+   31-01-02<br>
+   Changed the pages a little, added a patch for Unix, now the source should
+   build more easily. Also changed the Unix build instructions, forgot that
+   the tarball has one subdir to many... As far as I know the source will
+   now compile on Linux and Solaris.
+  </p>
+  <p>
+   28-01-02<br>
+   A couple of weeks ago I already announced on OpenH323 that I have a new
+   <a href="callflow/index.html">tool</a>, but I didn't add a very clear link on it from this page. So I
+   thought I'd do it now
+  </p>
+  <p>
+   14-08-01<br>
+   The faststart and H.245 tunneling capability has been improved. In Help/About
+   you can now see that this version of Ethereal supports H.323. No source
+   update (yet). A collegue of mine has created an Installshield setup. (hi Hans!)
+  </p>
+  <p>
+   6-07-01<br>
+   The H.323 capable Ethereal now supports Faststart and H.245 tunneling. No
+   upgrade to Ethereal 0.8.18 yet. The source you can download at this site
+   has NOT been updated. I will have to really spend some time making a working
+   Linux source, because at the moment it doesn't work. Windows version should
    still work.
   </p>
   <p>
-   9-4-01<br>
-   The H.323 version of Ethereal is now also available for Linux! Go to the 
-   source page and find out how to get it to work. There was also an 
+   9-04-01<br>
+   The H.323 version of Ethereal is now also available for Linux! Go to the
+   source page and find out how to get it to work. There was also an
    embarassing spelling mistake I removed (did I just make one?)
   </p>
   <p>
-   15-1-01<br>
-   I think I have nailed the one big issue my H.323 dissector had. The problem was that 
-   not all Call Signalling related trafiic was going to / from port 1720. When I wrote 
-   the dissector last year, I had no idea that a lot of people would run into this 
-   problem. I think I have now solved it using a heuristic dissector. It should solve all 
-   problems related to capturing direct endpoint to endpoint traffic and traffic to some 
+   15-01-01<br>
+   I think I have nailed the one big issue my H.323 dissector had. The problem was that
+   not all Call Signalling related trafiic was going to / from port 1720. When I wrote
+   the dissector last year, I had no idea that a lot of people would run into this
+   problem. I think I have now solved it using a heuristic dissector. It should solve all
+   problems related to capturing direct endpoint to endpoint traffic and traffic to some
    gateways.
   </p>
   <p>
-   14-1-01<br>
-   I think I have nailed the one big issue my H.323 dissector had. The problem was that 
-   not all Call Signalling related traffic was going to / from port 1720. When I wrote 
-   the dissector last year, I had no idea that a lot of people would run into this 
-   problem. I think I have now solved it using a heuristic dissector. It should solve all 
-   problems related to capturing direct endpoint to endpoint traffic and traffic to some 
+   14-01-01<br>
+   I think I have nailed the one big issue my H.323 dissector had. The problem was that
+   not all Call Signalling related traffic was going to / from port 1720. When I wrote
+   the dissector last year, I had no idea that a lot of people would run into this
+   problem. I think I have now solved it using a heuristic dissector. It should solve all
+   problems related to capturing direct endpoint to endpoint traffic and traffic to some
    gateways.
   </p>
   <p>
-   13-1-01<br>
-   Wow, within a day another release.... I have found a small TPKT/Q.931 problem and I have 
-   updated the website. I have not updated the executable yet, because uploading >3 
+   13-01-01<br>
+   Wow, within a day another release.... I have found a small TPKT/Q.931 problem and I have
+   updated the website. I have not updated the executable yet, because uploading >3
    megabyte each evening costs me too much money, so I'll have to do it from work.
   </p>
   <p>
-   13-1-01<br>
-   Finally, a new version! This solves no big issues, but the source is now for Ethereal 
-   version 0.8.15. As always, there's an executable to download and I have also made 
+   13-01-01<br>
+   Finally, a new version! This solves no big issues, but the source is now for Ethereal
+   version 0.8.15. As always, there's an executable to download and I have also made
    available Tethereal, which is the textmode variant of Ethereal. This site has also changed
-   a little, the zip files are in a different place and the compile instructions have 
+   a little, the zip files are in a different place and the compile instructions have
    changed.
   </p>
   <p>
-   26-9-00<br>
+   26-09-00<br>
    Another new version of the executable, this solves ANOTHER Q.931 / TPKT related bug.
    This version should also support Gatekeeper discovery (GRQ) using multicast.
   </p>
   <p>
-   20-9-00<br>
-   There's a new version of the executable available for download. There was a bug in 
+   20-09-00<br>
+   There's a new version of the executable available for download. There was a bug in
    the TPKT handling by the Q.931 dissector. This release also fixes another TPKT bug
    I fixed earlier, where the TPKT header was sometimes displayed twice.
   </p>
   <h2>Download</h2>
   <p>
-   Download the <a href="bin/ethereal.exe">Win32 executable</a> (0.9 megabyte).<br>
-   Don't download this file if you want to run this version of Ethereal for 
-   the first time, use the link below.<br>
+   The <a href="/web/20020401232422/http://sourceforge.net/project/showfiles.php?group_id=49311">downloads</a>
+   for the Ethereal plugin are now hosted by Sourceforge.
   </p>
+  <h2>CallFlow</h2>
   <p>
-   Download the <a href="bin/setup.exe">InstallShield Setup</a> (3.5 megabyte).<br>
-   This will install the required DLL's and will also try to install the WinPCAP
-   drivers which enable you to capture network traffic.
-  </p>
-  <p>
-   Linux users go to the source page.
-  </p>
-  <p>
-   <a href="source/index.html">The source</a> is also available.
+   I have created <a href="callflow/index.html">a new tool</a>. You can create message flows for H.323 with it, so you
+   don't have to spend an afternoon drawing them yourself ;-)
   </p>
   <h2>Known issues</h2>
   <p>
-   At the moment, none! 
+   At the moment, none!
   </p>
   <h2>Links</h2>
   <p>
    <ul>
-    <li><a href="/web/20011130162714/http://www.ethereal.com/">Ethereal</a></li>
-    <li><a href="/web/20011130162714/http://www.openh323.org/">OpenH323</a>, the creators of the library the H.323 dissector is based on</li>
-    <li><a href="/web/20011130162714/http://www.databeam.com/h323/h323primer.html">An H.323 primer</a></li>
-    <li><a href="/web/20011130162714/http://people.itu.int/~jonesp/iptel/h323/">Another primer</a></li>
+    <li><a href="/web/20020401232422/http://www.ethereal.com/">Ethereal</a></li>
+    <li><a href="/web/20020401232422/http://www.openh323.org/">OpenH323</a>, the creators of the library the H.323 dissector is based on</li>
+    <li><a href="/web/20020401232422/http://www.databeam.com/h323/h323primer.html">An H.323 primer</a></li>
+    <li><a href="/web/20020401232422/http://people.itu.int/~jonesp/iptel/h323/">Another primer</a></li>
    </ul>
   </p>
   <center>
@@ -160,7 +179,10 @@
   <table width="100%" class=index border=0 cellspacing=0>
    <tr>
     <td width="12%" align="left">
-     &nbsp;
+     <a href="/web/20020401232422/http://sourceforge.net/projects/ethereal-h323-p/">
+      <img src="/web/20020401232422im_/http://sourceforge.net/sflogo.php?group_id=49311&amp;type=1"
+           border="0" alt="SourceForge.net Logo">
+     </a>
     </td>
     <td width="12%" align=center>
      &nbsp;
@@ -201,23 +223,21 @@
    </SCRIPT>
     </td>
     <td width="12%" align="right">
-     <!-- Start of NedStat Basic code -->
-      <a href="/web/20011130162714/http://nl.nedstatbasic.net/cgi-bin/viewstat?name=ethereal_h323">
-       <img src="/web/20011130162714im_/http://nl.nedstatbasic.net/cgi-bin/nedstat.gif?name=ethereal_h323" border=0 alt="" nosave width=22 height=22>
-      </a>
-     <!-- End of NedStat Basic code -->
-     <!-- Start of ReferStat -->
-      <script type="text/javascript" language="JavaScript">
-       <!--
-         d=document;
-         d.write("<img src=\"/web/20011130162714/http://nl.nedstatbasic.net");
-         d.write("/cgi-bin/referstat.gif?");
-         d.write("name=ethereal_h323&refer=");
-         d.write(escape(top.document.referrer));
-         d.write("\" width=1 height=1 align=\"right\">");
-       // -->
+      <!-- Begin Nedstat Basic code -->
+      <!-- Title: Ethereal H.323 version -->
+      <!-- URL: /web/20020401232422/http://voice2sniff.org/index.html -->
+      <script language="JavaScript" src="/web/20020401232422js_/http://m1.nedstatbasic.net/basic.js"></script>
+      <script language="JavaScript">
+        <!--
+          nedstatbasic("AAr2qwKzQMS3EK1GGI7CWwC9X5bA", 0);
+        // -->
       </script>
-     <!-- End of ReferStat -->    
+      <noscript>
+        <a target="_blank" href="/web/20020401232422/http://v1.nedstatbasic.net/stats?AAr2qwKzQMS3EK1GGI7CWwC9X5bA">
+          <img src="/web/20020401232422im_/http://m1.nedstatbasic.net/n?id=AAr2qwKzQMS3EK1GGI7CWwC9X5bA" border="0" nosave  width="18" height="18">
+        </a>
+      </noscript>
+      <!-- End Nedstat Basic code -->
     </td>
    </tr>
   </table>
